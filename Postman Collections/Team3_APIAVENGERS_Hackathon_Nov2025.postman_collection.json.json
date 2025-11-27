@@ -18,49 +18,7 @@
 		},
 		{
 			"name": "User Login Controller",
-			"item": [
-				{
-					"name": "Post - login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Get token\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.collectionVariables.set (\"Bearer_token\",jsonData.token)",
-									"});",
-									"   "
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {},
-								"id": "8487fcbe-d19e-4628-9cfa-e88ce3fd2a49"
-							}
-						}
-					],
-					"id": "2afe3c24-e986-44ff-9bc2-0a133260a98c",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"userLoginEmailId\": \"team3@gmail.com\",\n  \"password\": \"ApiRequest@23\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{base_url}}/login",
-						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
-					},
-					"response": []
-				}
-			],
+			"item": [],
 			"id": "571e7c07-1d0a-404f-93de-b90b39d6ffe8"
 		},
 		{
@@ -70,8 +28,1146 @@
 		},
 		{
 			"name": "Skill Master Controller",
-			"item": [],
-			"id": "36fe244a-45bd-4a5e-b292-28ee16b0246f"
+			"item": [
+				{
+					"name": "Get all skills",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7d11636f-5c76-4650-9fc0-e2edb479bd2d",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.expectedStatusCode === 200) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"\r",
+									"    console.log(\"skillId: \", jsonData[1].skillId);\r",
+									"    pm.environment.set(\"skillId\", jsonData[1].skillId);\r",
+									"\r",
+									"    console.log(\"skillMasterName: \", jsonData[1].skillName);\r",
+									"    pm.environment.set(\"skillMasterName\", jsonData[1].skillName);\r",
+									"\r",
+									"        // Validate response schema using JSON Schema validation.\r",
+									"    const schema = {\r",
+									"    type: \"array\",\r",
+									"    items: {\r",
+									"        type: \"object\",\r",
+									"        required: [\r",
+									"            \"skillId\", \"skillName\", \"creationTime\", \"lastModTime\" ],\r",
+									"        properties: {\r",
+									"            skillId: { type: \"number\" },\r",
+									"            skillName: { type: \"string\" },\r",
+									"            creationTime: { type: \"string\" },\r",
+									"            lastModTime: { type: \"string\" }\r",
+									"        }\r",
+									"    }\r",
+									"    };\r",
+									"\r",
+									"    pm.test(\"Validate array of skill schema\", function () {\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "aa9485f5-6f2b-4420-bd2b-1ee92f20ea77",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.requestOperation !== 'getAllSkills') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "c34fcb72-f90e-4d27-af3f-e3aae8fa43fd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/{{endPoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get skill by skill name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a0ef83a3-a549-4831-87a3-54b3e1a7d46b",
+								"exec": [
+									"\r",
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 200) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.test(\"skill property is present in response body\", function () {\r",
+									"        try {\r",
+									"            pm.expect(jsonData[0]).to.have.property(\"skillId\");\r",
+									"            pm.expect(jsonData[0]).to.have.property(\"skillName\");\r",
+									"            pm.expect(jsonData[0]).to.have.property(\"creationTime\");\r",
+									"            pm.expect(jsonData[0]).to.have.property(\"lastModTime\");\r",
+									"        } catch (e) {\r",
+									"            pm.expect.fail(\"Skill property or response is not valid JSON\");\r",
+									"        }\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Validate that skillId is not zero\", function() {\r",
+									"        pm.expect(jsonData[0].skillId).to.not.eql(0);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Validate skillName matchs with expected value\", function() {\r",
+									"        pm.expect(jsonData[0].skillName).to.eql(pm.environment.get(\"skillMasterName\"));\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"creationTime is valid timestamp\", function () {\r",
+									"      pm.expect(Date.parse(jsonData[0].creationTime)).to.not.be.NaN;\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"lastModTime is valid timestamp\", function () {\r",
+									"        pm.expect(Date.parse(jsonData[0].lastModTime)).to.not.be.NaN;\r",
+									"    });\r",
+									"\r",
+									"    // Validate response schema using JSON Schema validation.\r",
+									"    const schema = {\r",
+									"    type: \"array\",\r",
+									"    items: {\r",
+									"        type: \"object\",\r",
+									"        required: [\r",
+									"            \"skillId\", \"skillName\", \"creationTime\", \"lastModTime\" ],\r",
+									"        properties: {\r",
+									"            skillId: { type: \"number\" },\r",
+									"            skillName: { type: \"string\" },\r",
+									"            creationTime: { type: \"string\" },\r",
+									"            lastModTime: { type: \"string\" }\r",
+									"        }\r",
+									"    }\r",
+									"    };\r",
+									"\r",
+									"    pm.test(\"Validate array of skill schema\", function () {\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "715ac1df-99f1-4fcb-a14c-7b262f20826a",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.requestOperation !== 'getSkillByName') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "2ec4f6df-e7da-493c-9425-784e95737784",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillMasterName",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillMasterName"
+							],
+							"variable": [
+								{
+									"id": "92cca7c7-eee8-4870-a314-3986000ee49d",
+									"key": "skillMasterName",
+									"value": "{{skillMasterName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new skill",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c92d48ba-6bc7-483b-b994-2036e65972f5",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.requestOperation !== 'createSkill') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "adaef4ae-d138-4210-ab64-61236098e40d",
+								"exec": [
+									"\r",
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 200) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.test(\"skill property is present in response body\", function () {\r",
+									"        try {\r",
+									"            pm.expect(jsonData).to.have.property(\"skillId\");\r",
+									"            pm.expect(jsonData).to.have.property(\"skillName\");\r",
+									"            pm.expect(jsonData).to.have.property(\"creationTime\");\r",
+									"            pm.expect(jsonData).to.have.property(\"lastModTime\");\r",
+									"        } catch (e) {\r",
+									"            pm.expect.fail(\"Skill property or response is not valid JSON\");\r",
+									"        }\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Validate that skillId is not zero\", function() {\r",
+									"        pm.expect(jsonData.skillId).to.not.eql(0);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Validate skillName matchs with expected value\", function() {\r",
+									"        pm.expect(jsonData.skillName).to.eql(testData.skillName);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"creationTime is valid timestamp\", function () {\r",
+									"      pm.expect(Date.parse(jsonData.creationTime)).to.not.be.NaN;\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"lastModTime is valid timestamp\", function () {\r",
+									"        pm.expect(Date.parse(jsonData.lastModTime)).to.not.be.NaN;\r",
+									"    });\r",
+									"\r",
+									"    // Validate response schema using JSON Schema validation.\r",
+									"    const schema = {\r",
+									"    type: \"object\",\r",
+									"        required: [\r",
+									"            \"skillId\", \"skillName\", \"creationTime\", \"lastModTime\" ],\r",
+									"        properties: {\r",
+									"            skillId: { type: \"number\" },\r",
+									"            skillName: { type: \"string\" },\r",
+									"            creationTime: { type: \"string\" },\r",
+									"            lastModTime: { type: \"string\" }\r",
+									"        }\r",
+									"    }\r",
+									"\r",
+									"    pm.test(\"Validate response schema\", function () {\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"\r",
+									"}\r",
+									"\r",
+									"if(testData.expectedStatusCode === 404) {\r",
+									"    pm.response.to.have.body(\"Invalid endpoint\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "ccc3f374-27a1-4637-9385-1fa7569ab3bb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{endPoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Create new skill with invalid content type",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c92d48ba-6bc7-483b-b994-2036e65972f5",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Create new skill with invalid content type') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "adaef4ae-d138-4210-ab64-61236098e40d",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 415) {\r",
+									"    pm.response.to.have.body(\"Content-Type not supported. Please use application/json\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "ce518055-72ab-4804-8f3b-400cdb0a48bf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{endPoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Create new skill with invalid method",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c92d48ba-6bc7-483b-b994-2036e65972f5",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Create new skill with invalid method') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "adaef4ae-d138-4210-ab64-61236098e40d",
+								"exec": [
+									"\r",
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 405) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.test(\"Validate message and success flag\", function () {\r",
+									"        pm.expect(jsonData.message).to.eql(\"Request method 'PUT' is not supported\");\r",
+									"        pm.expect(jsonData.success).to.eql(false);\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "28956aeb-56e6-4989-8b53-3ccfe35e3dfc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{endPoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Create new skill with no auth",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c92d48ba-6bc7-483b-b994-2036e65972f5",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Create new skill with no auth') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "adaef4ae-d138-4210-ab64-61236098e40d",
+								"exec": [
+									"\r",
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "3da44a49-1771-4bdd-8f9e-ea52c50e314b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{endPoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Update skill by skillId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "12c2e6b8-a928-478a-a391-59ce7d662ad3",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.requestOperation !== 'updateSkill') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ad7df24-64b1-44de-bb9c-c4d77a74f9d2",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 200) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"\r",
+									"    pm.test(\"skill property is present in response body\", function () {\r",
+									"        try {\r",
+									"            pm.expect(jsonData).to.have.property(\"skillId\");\r",
+									"            pm.expect(jsonData).to.have.property(\"skillName\");\r",
+									"            pm.expect(jsonData).to.have.property(\"creationTime\");\r",
+									"            pm.expect(jsonData).to.have.property(\"lastModTime\");\r",
+									"        } catch (e) {\r",
+									"            pm.expect.fail(\"Skill property or response is not valid JSON\");\r",
+									"        }\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Validate that skillId is equal to env skillId\", function() {\r",
+									"        pm.expect(jsonData.skillId).to.eql(pm.environment.skillId);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Validate that skillName is equal to env skillName\", function() {\r",
+									"        pm.expect(jsonData.skillName).to.eql(testData.skillName);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"creationTime is valid timestamp\", function () {\r",
+									"      pm.expect(Date.parse(jsonData.creationTime)).to.not.be.NaN;\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"lastModTime is valid timestamp\", function () {\r",
+									"        pm.expect(Date.parse(jsonData.lastModTime)).to.not.be.NaN;\r",
+									"    });\r",
+									"\r",
+									"    // Validate response schema using JSON Schema validation.\r",
+									"    const schema = {\r",
+									"    type: \"object\",\r",
+									"        required: [\r",
+									"            \"skillId\", \"skillName\", \"creationTime\", \"lastModTime\" ],\r",
+									"        properties: {\r",
+									"            skillId: { type: \"number\" },\r",
+									"            skillName: { type: \"string\" },\r",
+									"            creationTime: { type: \"string\" },\r",
+									"            lastModTime: { type: \"string\" }\r",
+									"        }\r",
+									"    }\r",
+									"\r",
+									"    pm.test(\"Validate response schema\", function () {\r",
+									"        pm.response.to.have.jsonSchema(schema);\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"if(testData.expectedStatusCode === 404) {\r",
+									"    pm.response.to.have.body(\"Invalid endpoint\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "37a646fe-fd12-4b2d-bee3-e4cc56d1c9a4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillId",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillId"
+							],
+							"variable": [
+								{
+									"id": "1622cb76-5264-4a77-ad85-77c6f21f9ece",
+									"key": "skillId",
+									"value": "{{skillId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update skill by skillId with invalid content type",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "12c2e6b8-a928-478a-a391-59ce7d662ad3",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Update skill with invalid content type') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ad7df24-64b1-44de-bb9c-c4d77a74f9d2",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 415) {\r",
+									"    pm.response.to.have.body(\"Content-Type not supported. Please use application/json\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "8dcc4ded-6c0a-40e7-b256-71881c752764",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillId",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillId"
+							],
+							"variable": [
+								{
+									"id": "f4178084-5acb-4f3d-bb2c-26ef8f2e105e",
+									"key": "skillId",
+									"value": "{{skillId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update skill by skillId with invalid method",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "12c2e6b8-a928-478a-a391-59ce7d662ad3",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Update skill with invalid method') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ad7df24-64b1-44de-bb9c-c4d77a74f9d2",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 405) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.test(\"Validate message and success flag\", function () {\r",
+									"        pm.expect(jsonData.message).to.eql(\"Request method 'POST' is not supported\");\r",
+									"        pm.expect(jsonData.success).to.eql(false);\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "4ca0c617-d5eb-4103-b629-bfabd7ac9f8b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillId",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillId"
+							],
+							"variable": [
+								{
+									"id": "e68a686d-3f33-49fa-9be3-0cc3f3689b07",
+									"key": "skillId",
+									"value": "{{skillId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update skill by skillId with no auth",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "12c2e6b8-a928-478a-a391-59ce7d662ad3",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Update skill with no auth') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ad7df24-64b1-44de-bb9c-c4d77a74f9d2",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "998f055f-8a81-49a9-9337-de37bec52c74",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"skillName\": \"{{skillName}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillId",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillId"
+							],
+							"variable": [
+								{
+									"id": "ea7a84ff-f571-42fb-90e0-b361168371ba",
+									"key": "skillId",
+									"value": "{{skillId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete skill by skillId",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bf1c2b09-2801-4b21-919f-f3aa48c1c4be",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.requestOperation !== 'deleteSkill') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "834e9f8a-6a6c-4b53-bd25-e23c9c8a3ca5",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 200) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.test(\"Validate message flag\", function () {\r",
+									"        pm.expect(jsonData.message).to.eql(\"Skill id deleted\");\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"if(testData.expectedStatusCode === 404) {\r",
+									"    if(testData.scenarioName == 'Delete skill by invalid skillId') {\r",
+									"        let jsonData = pm.response.json();\r",
+									"        pm.test(\"Validate message and success flag\", function () {\r",
+									"            pm.expect(jsonData.message).to.eql(\"no record found with skillId\");\r",
+									"            pm.expect(jsonData.success).to.eql(false);\r",
+									"        });\r",
+									"    }\r",
+									"\r",
+									"    if(testData.scenarioName == 'Delete skill by invalid endpoint') {\r",
+									"        pm.test(\"Validate message flag\", function () {\r",
+									"            pm.response.to.have.body(\"Invalid endpoint\");\r",
+									"        });\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "d1ad2291-da89-40bf-a9ac-af2ff5c9a58c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillId",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillId"
+							],
+							"variable": [
+								{
+									"id": "9a3b83f7-6e0a-468b-a0ab-ee0f8e794fd3",
+									"key": "skillId",
+									"value": "{{skillId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete skill with invalid method",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7b94123c-3b98-40f9-9298-4f21610529a6",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if(testData.expectedStatusCode === 405) {\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.test(\"Validate message and success flag\", function () {\r",
+									"        pm.expect(jsonData.message).to.eql(\"Request method 'PUT' is not supported\");\r",
+									"        pm.expect(jsonData.success).to.eql(false);\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "46c2d5df-ccbe-469c-bd49-852565f4a1da",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Delete skill with invalid method') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "a0d3cfa4-c4ef-4d9a-9e46-964a0a97c0c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillId",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillId"
+							],
+							"variable": [
+								{
+									"id": "33e8e422-64e1-4fb5-a66c-4779859714f1",
+									"key": "skillId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete skill with no auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "790bc150-61b9-4933-9764-4f5029491b5d",
+								"exec": [
+									"var testData = pm.iterationData.toObject();\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "baca968d-839f-425d-95f0-b6b82ced4c56",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.scenarioName !== 'Delete skill with no auth') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "3af29111-7305-4f34-9a69-cacfb86e805a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/{{endPoint}}/:skillId",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"{{endPoint}}",
+								":skillId"
+							],
+							"variable": [
+								{
+									"id": "58d114be-12d6-4709-b7c1-4b213d9a45c2",
+									"key": "skillId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "36fe244a-45bd-4a5e-b292-28ee16b0246f",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8a8c3382-d427-49f1-9205-a534be2e1e6d",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "050d2e80-4944-4601-9449-10e2ba67e8a7",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"let testData = pm.iterationData.toObject();\r",
+							"pm.test('Validate scenario -- ' + testData.scenarioName, function () {\r",
+							"    console.log(\"Scenario name -- \" + testData.scenarioName);\r",
+							"});\r",
+							"\r",
+							"var testcaseId = pm.iterationData.get (\"testCaseId\");\r",
+							"var scenarioName = pm.iterationData.get(\"scenarioName\");\r",
+							"var scenarioType = pm.iterationData.get(\"scenarioType\");\r",
+							"\r",
+							"pm.test(`TESTCASE: ${testcaseId} | TYPE: ${scenarioType} | SCENARIO: ${scenarioName}`, function () {\r",
+							"    pm.expect(testcaseId, \"Missing testcaseId\").to.not.be.undefined;\r",
+							"    pm.expect(scenarioType, \"Missing scenarioType\").to.not.be.undefined;\r",
+							"    pm.expect(scenarioName, \"Missing scenarioName\").to.not.be.undefined;\r",
+							"});\r",
+							"\r",
+							"console.log(\"Expected status code: \" + testData.expectedStatusCode);\r",
+							"\r",
+							"pm.test(\"Validate actual and expected Status code\", function() {\r",
+							"    pm.expect(pm.response.code).to.eql(testData.expectedStatusCode);\r",
+							"});"
+						]
+					}
+				}
+			]
 		}
 	],
 	"auth": {
@@ -107,7 +1203,8 @@
 	],
 	"variable": [
 		{
-			"key": "base_url",
+			"id": "a680ced4-e07e-4920-bdd9-4282baa469ac",
+			"key": "a680ced4-e07e-4920-bdd9-4282baa469ac",
 			"value": ""
 		}
 	]
