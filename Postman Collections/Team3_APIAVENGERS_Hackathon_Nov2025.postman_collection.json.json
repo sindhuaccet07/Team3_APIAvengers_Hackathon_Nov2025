@@ -1758,7 +1758,42 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/batches"
+						"url": {
+							"raw": "{{BaseUrl}}/batches?batchName=SDET %26 21&batchDescription=Automation batch&batchNoOfClasses=10&batchStatus=active&programId=121",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"batches"
+							],
+							"query": [
+								{
+									"key": "batchName",
+									"value": "SDET & 21",
+									"type": "text"
+								},
+								{
+									"key": "batchDescription",
+									"value": "Automation batch",
+									"type": "text"
+								},
+								{
+									"key": "batchNoOfClasses",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "batchStatus",
+									"value": "active",
+									"type": "text"
+								},
+								{
+									"key": "programId",
+									"value": "121",
+									"type": "text"
+								}
+							]
+						}
 					},
 					"response": []
 				},
