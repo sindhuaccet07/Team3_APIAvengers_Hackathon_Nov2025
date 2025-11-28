@@ -1698,106 +1698,6 @@
 			"name": "Program Batch Controller",
 			"item": [
 				{
-					"name": "create batch",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "a287c9d8-9121-40f5-9033-096b8b1b90ba",
-								"exec": [
-									"// Automatically set programId or batchName dynamically if needed",
-									"// Example: pm.environment.set(\"dynamicProgramId\", 121);",
-									"console.log(\"Creating new batch for programId 121\");",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "72fa6ef3-0798-4bda-aa84-172bdbadd657",
-								"exec": [
-									"",
-									"",
-									"pm.test(\"Batch created successfully\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.environment.set(\"batchId\", jsonData.batchId); // Save batchId for future requests",
-									"    pm.environment.set(\"batchName\", jsonData.batchName); // Save batchName",
-									"    console.log(\"Created Batch ID:\", pm.environment.get(\"batchId\"));",
-									"});",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"id": "e724346b-9df9-4463-becc-76712359a1de",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1MjIsImV4cCI6MTc2NDI4MTMyMn0.an7Yt9C8SjFlSnl9re0gair3bMW1qTqie2V6ooxXYfa9xJxmaAB0wOuFQ5eTy-lPwIDlcAIQlcnCo75AkmAm_Q"
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"batchName\": \"{{batchName}}\",\n  \"batchDescription\": \"{{batchDescription}}\",\n  \"batchNoOfClasses\": {{batchNoOfClasses}},\n  \"batchStatus\": \"{{batchStatus}}\",\n  \"programId\": {{programId}}\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BaseUrl}}/batches?batchName=SDET %26 21&batchDescription=Automation batch&batchNoOfClasses=10&batchStatus=active&programId=121",
-							"host": [
-								"{{BaseUrl}}"
-							],
-							"path": [
-								"batches"
-							],
-							"query": [
-								{
-									"key": "batchName",
-									"value": "SDET & 21",
-									"type": "text"
-								},
-								{
-									"key": "batchDescription",
-									"value": "Automation batch",
-									"type": "text"
-								},
-								{
-									"key": "batchNoOfClasses",
-									"value": "10",
-									"type": "text"
-								},
-								{
-									"key": "batchStatus",
-									"value": "active",
-									"type": "text"
-								},
-								{
-									"key": "programId",
-									"value": "121",
-									"type": "text"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "get all batches",
 					"event": [
 						{
@@ -2042,7 +1942,7 @@
 								}
 							}
 						},
-						"url": "https://lms-hackathon-nov-2025-8dd40899c026.herokuapp.com/lms/batches"
+						"url": "{{BaseUrl}}/lms/batches"
 					},
 					"response": []
 				},
@@ -2180,6 +2080,24 @@
 				},
 				{
 					"name": "update status",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b61a0a1e-8414-496d-a113-c249a59ea621",
+								"exec": [
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'updateBatch') {",
+									"    pm.execution.skipRequest();",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"id": "c42dfc11-262b-4665-9ea1-7b6c641a548b",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
