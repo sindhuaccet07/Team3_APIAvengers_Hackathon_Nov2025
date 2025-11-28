@@ -1942,7 +1942,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/lms/batches"
+						"url": "{{BaseUrl}}/lbatches"
 					},
 					"response": []
 				},
@@ -2120,7 +2120,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/lms/batches/101"
+						"url": "{{BaseUrl}}/batches/101"
 					},
 					"response": []
 				}
