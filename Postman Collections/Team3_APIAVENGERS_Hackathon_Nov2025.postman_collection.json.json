@@ -9,7 +9,58 @@
 		{
 			"name": "User Controller",
 			"item": [],
-			"id": "e7817035-eed8-4619-8995-196ae4ddd671"
+			"id": "e7817035-eed8-4619-8995-196ae4ddd671",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "433eb9b8-e613-4c1b-843c-095ff79084f4",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"const requestToRun = pm.iterationData.get(\"requestName\");\r",
+							"const currentRequest = pm.info.requestName;\r",
+							"if(requestToRun && (currentRequest !== requestToRun)) {\r",
+							"    pm.execution.skipRequest();\r",
+							"}"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e09c42a2-cbe4-4cc1-8f72-25246497db07",
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"console.log(\"Scenario name -- \" + pm.iterationData.get(\"scenarioName\"));\r",
+							"let expectedStatusCode = pm.iterationData.get(\"expectedStatusCode\");\r",
+							"let expectedStatusMessage = pm.iterationData.get(\"expectedStatusMessage\");\r",
+							"\r",
+							"console.log(\"Expected status code: \" + expectedStatusCode);\r",
+							"console.log(\"Expected status code: \" + expectedStatusMessage);\r",
+							"\r",
+							"pm.test(\"Validate Status Code - \" +  pm.iterationData.get(\"scenarioType\") + \" - \" + pm.iterationData.get(\"scenarioName\"), function() {\r",
+							"    try {\r",
+							"         pm.expect(pm.response.code).to.eql(expectedStatusCode);\r",
+							"    } catch (e) {\r",
+							"        pm.expect.fail(\"Actual Status Code(\" + pm.response.code + \") is different than expected (\" + expectedStatusCode + \")\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate Status Message - \" +  pm.iterationData.get(\"scenarioType\") + \" - \" + pm.iterationData.get(\"scenarioName\"), function() {\r",
+							"    try {\r",
+							"         pm.expect(pm.response.status).to.eql(expectedStatusMessage);\r",
+							"    } catch (e) {\r",
+							"        pm.expect.fail(\"Actual Status Message(\" + pm.response.status + \") is different than expected (\" + expectedStatusMessage + \")\");\r",
+							"    }\r",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "User Login Controller",
