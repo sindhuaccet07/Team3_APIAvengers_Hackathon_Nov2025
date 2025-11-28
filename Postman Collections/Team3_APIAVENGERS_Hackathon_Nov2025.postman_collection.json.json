@@ -1707,7 +1707,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'createSkill') {",
+									"if (testData.requestOperation !== 'getAllBatches') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -1768,7 +1768,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'createSkill') {",
+									"if (testData.requestOperation !== 'getAllBatches') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -1835,7 +1835,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'createSkill') {",
+									"if (testData.requestOperation !== 'getAllBatches') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -1956,7 +1956,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'createSkill') {",
+									"if (testData.requestOperation !== 'getAllBatches') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -2022,7 +2022,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'createSkill') {",
+									"if (testData.requestOperation !== 'getAllBatches') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -2120,7 +2120,7 @@
 								}
 							}
 						},
-						"url": "https://lms-hackathon-nov-2025-8dd40899c026.herokuapp.com/lms/batches/101"
+						"url": "{{BaseUrl}}/lms/batches/101"
 					},
 					"response": []
 				}
