@@ -1698,7 +1698,7 @@
 			"name": "Program Batch Controller",
 			"item": [
 				{
-					"name": "create batch 1",
+					"name": "create batch",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1763,91 +1763,40 @@
 					"response": []
 				},
 				{
-					"name": "create batch 2",
-					"id": "14c7e082-9f80-4798-85c6-a2d7d2e61241",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1MjIsImV4cCI6MTc2NDI4MTMyMn0.an7Yt9C8SjFlSnl9re0gair3bMW1qTqie2V6ooxXYfa9xJxmaAB0wOuFQ5eTy-lPwIDlcAIQlcnCo75AkmAm_Q"
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"batchName\": \"SDET2\",\n  \"batchDescription\": \"API Testing batch\",\n  \"batchNoOfClasses\": 12,\n  \"batchStatus\": \"active\",\n  \"programId\": 121\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "https://lms-hackathon-nov-2025-8dd40899c026.herokuapp.com/lms/batches"
-					},
-					"response": []
-				},
-				{
-					"name": "create batch 3",
-					"id": "87b25c0b-f5e7-430a-9402-ea0123b6aabd",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1MjIsImV4cCI6MTc2NDI4MTMyMn0.an7Yt9C8SjFlSnl9re0gair3bMW1qTqie2V6ooxXYfa9xJxmaAB0wOuFQ5eTy-lPwIDlcAIQlcnCo75AkmAm_Q"
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"batchName\": \"JavaBatch1\",\n  \"batchDescription\": \"Core Java training\",\n  \"batchNoOfClasses\": 8,\n  \"batchStatus\": \"active\",\n  \"programId\": 121\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "https://lms-hackathon-nov-2025-8dd40899c026.herokuapp.com/lms/batches"
-					},
-					"response": []
-				},
-				{
-					"name": "create batch 4",
-					"id": "94c1f5bf-104a-4953-8a66-b540a55822dd",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1MjIsImV4cCI6MTc2NDI4MTMyMn0.an7Yt9C8SjFlSnl9re0gair3bMW1qTqie2V6ooxXYfa9xJxmaAB0wOuFQ5eTy-lPwIDlcAIQlcnCo75AkmAm_Q"
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"batchName\": \"PythonBatch1\",\n  \"batchDescription\": \"Python basics\",\n  \"batchNoOfClasses\": 9,\n  \"batchStatus\": \"inactive\",\n  \"programId\": 121\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "https://lms-hackathon-nov-2025-8dd40899c026.herokuapp.com/lms/batches"
-					},
-					"response": []
-				},
-				{
 					"name": "get all batches",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b14d7453-6812-4e71-9e5b-08dc0bc58a2e",
+								"exec": [
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'createSkill') {",
+									"    pm.execution.skipRequest();",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a3f53d0-2ed4-4932-b792-ad427d6bc599",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"id": "574370c7-1dba-42f1-8bcd-d513f62f19e0",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1876,6 +1825,39 @@
 				},
 				{
 					"name": "get batch by program id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c59c8f0e-d69b-49b1-a295-a61a490467ec",
+								"exec": [
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'createSkill') {",
+									"    pm.execution.skipRequest();",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "195827e4-72a7-426d-b8c5-f656bc781fe5",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"id": "0f3d7a97-9211-4552-9b93-ab7a79d23b46",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1910,6 +1892,44 @@
 				},
 				{
 					"name": "get batch details by batch name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2168a4bd-7969-4321-be9d-54fe4f854f4f",
+								"exec": [
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'createSkill') {",
+									"    pm.execution.skipRequest();",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "5a2861f8-6aba-4d9c-be67-4e83af7fb284",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Batch Name matches\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.batchName).to.eql(pm.environment.get(\"batchName\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"id": "68a516a5-8348-46d9-a96c-1d871940e7d7",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -1923,23 +1943,23 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "{{BaseUrl}}batches/batchName/{{batchName}}"
+						"url": "{{BaseUrl}}/batches/batchName/{{batchName}}\n"
 					},
 					"response": []
 				},
 				{
-					"name": "get batch details by batch id",
+					"name": "create batch",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "ac7f67a7-76e9-4952-b6e2-b20a1c49818c",
+								"id": "7f17a18e-d9c9-4a77-a3b2-22feb2c242d3",
 								"exec": [
-									"// Ensure batchId exists in environment",
-									"if (!pm.environment.get(\"batchId\")) {",
-									"    console.warn(\"Batch ID is missing. Create a batch first.\");",
-									"}",
-									""
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'createBatch') {",
+									"    pm.execution.skipRequest();",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -1949,7 +1969,71 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d70c40ca-b450-42da-a662-ff6dfc0a4538",
+								"id": "ade2f7eb-dfcb-43f4-92c5-fb19521c76b4",
+								"exec": [
+									"pm.test(\"Batch created successfully\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"batchId\", jsonData.batchId);",
+									"    pm.environment.set(\"batchName\", jsonData.batchName);",
+									"    console.log(\"Created Batch ID:\", pm.environment.get(\"batchId\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "921fcabc-8cf1-4496-bd27-5952d82c927a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQzMDk4OTQsImV4cCI6MTc2NDMzODY5NH0.0xPR4-ttVHqagx0FNpd3nrYJlYooUwqGMmojqzbwr7HTv8ocQbR3-dsVowa1ukhytprIiygzX25DAN9Wz8S57g"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"batchName\": \"{{batchName}}\",\n  \"batchDescription\": \"{{batchDescription}}\",\n  \"batchNoOfClasses\": {{batchNoOfClasses}},\n  \"batchStatus\": \"{{batchStatus}}\",\n  \"programId\": {{programId}}\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://lms-hackathon-nov-2025-8dd40899c026.herokuapp.com/lms/batches"
+					},
+					"response": []
+				},
+				{
+					"name": "get batch details by batch id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9cacc013-5370-4bd1-b47c-09be2f9a0792",
+								"exec": [
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'createSkill') {",
+									"    pm.execution.skipRequest();",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e909b8e2-adef-4325-8ae6-3dc90c1d6ddd",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1980,7 +2064,16 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "https://lms-hackathon-nov-2025-8dd40899c026.herokuapp.com/lms/batches/batchId/101"
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/batches/{{batchId}}\n"
 					},
 					"response": []
 				},
@@ -1990,13 +2083,13 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "c2f460d3-50aa-4131-8a1a-2b5cd322e462",
+								"id": "7b9629ff-7532-4f51-8be4-abb4fd5a1b81",
 								"exec": [
-									"// Ensure batchId exists for deletion",
-									"if (!pm.environment.get(\"batchId\")) {",
-									"    console.warn(\"Batch ID is missing. Cannot delete.\");",
-									"}",
-									""
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'createSkill') {",
+									"    pm.execution.skipRequest();",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -2006,7 +2099,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8afdfab5-07c5-4a94-b777-a876b6037b36",
+								"id": "9dc5d32d-d920-42cb-a6eb-1012551d9da0",
 								"exec": [
 									"pm.test(\"Status code is 200 or 204\", function () {",
 									"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
@@ -2014,7 +2107,7 @@
 									"",
 									"pm.test(\"Batch deleted successfully\", function () {",
 									"    console.log(\"Deleted Batch ID:\", pm.environment.get(\"batchId\"));",
-									"    pm.environment.unset(\"batchId\"); // Remove from environment after deletion",
+									"    pm.environment.unset(\"batchId\");",
 									"});",
 									""
 								],
@@ -2046,7 +2139,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}batches/{{batchId}}"
+						"url": "{{BaseUrl}}/batches/{{batchId}}\n"
 					},
 					"response": []
 				},
