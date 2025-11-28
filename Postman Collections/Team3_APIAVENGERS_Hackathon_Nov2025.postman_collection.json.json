@@ -2113,14 +2113,14 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"batchName\": \"PythonBatch1\",\n  \"batchDescription\": \"Python basics\",\n  \"batchNoOfClasses\": 9,\n  \"batchStatus\": \"active\",\n  \"programId\": 121\n}\n",
+							"raw": "{\n  \"batchName\": \"{{batchName}}\",\n  \"batchDescription\": \"{{batchDescription}}\",\n  \"batchNoOfClasses\": {{batchNoOfClasses}},\n  \"batchStatus\": \"{{batchStatus}}\",\n  \"programId\": {{programId}}\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/batches/101"
+						"url": "{{BaseUrl}}/batches/{{batchId}}\n"
 					},
 					"response": []
 				}
