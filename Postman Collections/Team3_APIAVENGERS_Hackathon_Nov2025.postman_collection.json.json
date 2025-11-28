@@ -1700,7 +1700,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"batchName\": \"SDET & 21\",\n  \"batchDescription\": \"Automation batch\",\n  \"batchNoOfClasses\": 10,\n  \"batchStatus\": \"active\",\n  \"programId\": 121\n}\n",
+							"raw": "{\n  \"batchName\": \"{{batchName}}\",\n  \"batchDescription\": \"{{batchDescription}}\",\n  \"batchNoOfClasses\": {{batchNoOfClasses}},\n  \"batchStatus\": \"{{batchStatus}}\",\n  \"programId\": {{programId}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
