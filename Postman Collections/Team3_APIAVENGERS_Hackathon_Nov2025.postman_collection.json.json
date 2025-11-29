@@ -3348,7 +3348,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQzMDk4OTQsImV4cCI6MTc2NDMzODY5NH0.0xPR4-ttVHqagx0FNpd3nrYJlYooUwqGMmojqzbwr7HTv8ocQbR3-dsVowa1ukhytprIiygzX25DAN9Wz8S57g"
+								"token": "{{token}}"
 							}
 						},
 						"method": "POST",
@@ -3409,7 +3409,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1MjIsImV4cCI6MTc2NDI4MTMyMn0.an7Yt9C8SjFlSnl9re0gair3bMW1qTqie2V6ooxXYfa9xJxmaAB0wOuFQ5eTy-lPwIDlcAIQlcnCo75AkmAm_Q"
+								"token": "{{token}}"
 							}
 						},
 						"method": "GET",
@@ -3470,7 +3470,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1NDQsImV4cCI6MTc2NDI4MTM0NH0.5pDq6SrIF3gxtO3-WofETh3V6JK6OPNgn_R4vrFTNn1wWSVb_OImJUmxPG5mi77TE6xFMDtprsx0i8D1ZrN2bQ"
+								"token": "{{token}}"
 							}
 						},
 						"method": "GET",
@@ -3542,7 +3542,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1NDQsImV4cCI6MTc2NDI4MTM0NH0.5pDq6SrIF3gxtO3-WofETh3V6JK6OPNgn_R4vrFTNn1wWSVb_OImJUmxPG5mi77TE6xFMDtprsx0i8D1ZrN2bQ"
+								"token": "{{token}}"
 							}
 						},
 						"method": "GET",
@@ -3599,7 +3599,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1NDQsImV4cCI6MTc2NDI4MTM0NH0.5pDq6SrIF3gxtO3-WofETh3V6JK6OPNgn_R4vrFTNn1wWSVb_OImJUmxPG5mi77TE6xFMDtprsx0i8D1ZrN2bQ"
+								"token": "{{token}}"
 							}
 						},
 						"method": "GET",
@@ -3665,7 +3665,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1NDQsImV4cCI6MTc2NDI4MTM0NH0.5pDq6SrIF3gxtO3-WofETh3V6JK6OPNgn_R4vrFTNn1wWSVb_OImJUmxPG5mi77TE6xFMDtprsx0i8D1ZrN2bQ"
+								"token": "{{token}}"
 							}
 						},
 						"method": "DELETE",
@@ -3711,7 +3711,7 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQyNTI1NDQsImV4cCI6MTc2NDI4MTM0NH0.5pDq6SrIF3gxtO3-WofETh3V6JK6OPNgn_R4vrFTNn1wWSVb_OImJUmxPG5mi77TE6xFMDtprsx0i8D1ZrN2bQ"
+								"token": "{{token}}"
 							}
 						},
 						"method": "PUT",
