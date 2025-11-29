@@ -340,6 +340,159 @@
 						"url": "{{BaseUrl}}/roles"
 					},
 					"response": []
+				},
+				{
+					"name": "Get User by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6901d741-e066-48d0-a9ff-946bfeb136d8",
+								"exec": [
+									"let _userId = pm.iterationData.get(\"userId\");\r",
+									"if (!_userId) {\r",
+									"    pm.environment.set(\"tempUserId\", pm.environment.get(\"userId\"));\r",
+									"} else {\r",
+									"    pm.environment.set(\"tempUserId\", _userId);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "af5932df-0f4e-4dd0-a767-e46f0ba8004c",
+								"exec": [
+									"pm.test(\"Validate Response Schema - \" +  pm.iterationData.get(\"scenarioType\") + \" - \" + pm.iterationData.get(\"scenarioName\"), function () {\r",
+									"    const positiveSchema = {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"            user: {\r",
+									"                type: \"object\",\r",
+									"                properties: {\r",
+									"                    userId: { type: \"string\" },\r",
+									"                    userFirstName: { type: \"string\" },\r",
+									"                    userLastName: { type: \"string\" },\r",
+									"                    userMiddleName: { type: \"string\" },\r",
+									"                    userPhoneNumber: { type: \"string\" },\r",
+									"                    userLocation: { type: \"string\" },\r",
+									"                    userTimeZone: { type: \"string\" },\r",
+									"                    userLinkedinUrl: { type: [\"string\",\"null\"] },\r",
+									"                    userEduUg: { type: [\"string\",\"null\"] },\r",
+									"                    userEduPg:  { type: [\"string\",\"null\"] },\r",
+									"                    userComments: { type: \"string\" },\r",
+									"                    userVisaStatus: { type: \"string\" },\r",
+									"                    userLoginEmail: { type: [\"string\",\"null\"] }\r",
+									"                },\r",
+									"                required: [\r",
+									"                    \"userId\",\r",
+									"                    \"userFirstName\",\r",
+									"                    \"userLastName\",\r",
+									"                    \"userPhoneNumber\",\r",
+									"                    \"userLocation\",\r",
+									"                    \"userTimeZone\",\r",
+									"                    \"userLinkedinUrl\",\r",
+									"                    \"userVisaStatus\",\r",
+									"                    \"userLoginEmail\"\r",
+									"                ]\r",
+									"            },\r",
+									"\r",
+									"            roles: {\r",
+									"                type: \"array\",\r",
+									"                items: {\r",
+									"                    type: \"object\",\r",
+									"                    properties: {\r",
+									"                        roleId: { type: \"string\" },\r",
+									"                        userRoleStatus: { type: \"string\" }\r",
+									"                    },\r",
+									"                    required: [\"roleId\", \"userRoleStatus\"]\r",
+									"                }\r",
+									"            },\r",
+									"\r",
+									"            programBatches: {\r",
+									"                type: \"array\",\r",
+									"                items: {\r",
+									"                    type: \"object\",\r",
+									"                    properties: {\r",
+									"                        programId: { type: \"number\" },\r",
+									"                        programName: { type: \"string\" },\r",
+									"                        batches: {\r",
+									"                            type: \"array\",\r",
+									"                            items: {\r",
+									"                                type: \"object\",\r",
+									"                                properties: {\r",
+									"                                    batchId: { type: \"number\" },\r",
+									"                                    batchName: { type: \"string\" },\r",
+									"                                    userBatchStatus: { type: \"string\" }\r",
+									"                                },\r",
+									"                                required: [\"batchId\", \"batchName\", \"userBatchStatus\"]\r",
+									"                            }\r",
+									"                        }\r",
+									"                    },\r",
+									"                    required: [\"programId\", \"programName\", \"batches\"]\r",
+									"                }\r",
+									"            }\r",
+									"        },\r",
+									"        required: [\"user\", \"roles\"]\r",
+									"    };\r",
+									"        \r",
+									"    const negativeSchema = {\r",
+									"        type: \"object\",\r",
+									"        properties: {\r",
+									"            \"message\": {\"type\": \"string\"},\r",
+									"            \"success\": {\"type\": \"boolean\"}\r",
+									"        },\r",
+									"        required: [\"message\", \"success\"]\r",
+									"    };\r",
+									"    \r",
+									"    if(pm.response.code ===200){\r",
+									"        pm.response.to.have.jsonSchema(positiveSchema);\r",
+									"    } else {\r",
+									"        pm.response.to.have.jsonSchema(negativeSchema);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "b896d87d-8254-4565-8b37-bdf914fa24e7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/users/:Id",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users",
+								":Id"
+							],
+							"variable": [
+								{
+									"id": "131e102d-ed70-4e78-a2ac-cfa338c47a11",
+									"key": "Id",
+									"value": "{{tempUserId}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"id": "e7817035-eed8-4619-8995-196ae4ddd671",
