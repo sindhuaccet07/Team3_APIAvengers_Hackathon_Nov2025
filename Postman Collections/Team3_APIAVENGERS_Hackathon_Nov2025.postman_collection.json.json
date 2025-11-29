@@ -125,6 +125,68 @@
 						"url": "{{BaseUrl}}/users/roleStatus"
 					},
 					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a61a2b81-b683-4056-943b-d895301c5886",
+								"exec": [
+									"pm.test(\"Validate Response Schema- \" +  pm.iterationData.get(\"scenarioType\") + \" - \" + pm.iterationData.get(\"scenarioName\"), function () {\r",
+									"    const schema = {\r",
+									"        type: \"array\",\r",
+									"        items: {\r",
+									"            type: \"object\",\r",
+									"            properties: {\r",
+									"                \"userId\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userFirstName\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userLastName\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userMiddleName\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userPhoneNumber\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userLocation\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userTimeZone\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userLinkedinUrl\": { \"type\": [\"string\",\"null\"]},\r",
+									"\t\t\t\t\"userEduUg\": { \"type\": [\"string\",\"null\"]},\r",
+									"\t\t\t\t\"userEduPg\": { \"type\": [\"string\",\"null\"]},\r",
+									"\t\t\t\t\"userVisaStatus\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userComments\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userLoginEmail\": { \"type\": \"string\"}\r",
+									"            },\r",
+									"            required: [\"userId\", \"userFirstName\", \"userLastName\", \r",
+									"\t\t\t    \"userPhoneNumber\",\"userLocation\",\r",
+									"\t\t\t\t\"userTimeZone\",\"userLinkedinUrl\",\"userVisaStatus\",\r",
+									"\t\t\t\t\"userLoginEmail\"]\r",
+									"        }\r",
+									"    };\r",
+									"\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "971fd6cc-54df-4782-8dc1-c7edc860dd58",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/users"
+					},
+					"response": []
 				}
 			],
 			"id": "e7817035-eed8-4619-8995-196ae4ddd671",
