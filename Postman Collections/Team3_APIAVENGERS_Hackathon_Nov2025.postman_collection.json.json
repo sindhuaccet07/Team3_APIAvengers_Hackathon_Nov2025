@@ -4395,7 +4395,6 @@
 							],
 							"variable": [
 								{
-									"id": "6020d816-f5e7-4a43-af98-d859b438ee61",
 									"key": "skillId",
 									"value": "{{skillId}}"
 								}
