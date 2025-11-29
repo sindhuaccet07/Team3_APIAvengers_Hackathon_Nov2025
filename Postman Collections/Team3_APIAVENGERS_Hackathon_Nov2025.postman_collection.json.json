@@ -7,6 +7,111 @@
 	},
 	"item": [
 		{
+			"name": "1. Login Tests",
+			"item": [
+				{
+					"name": "Login API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8d07b718-c849-403e-b928-7559502b33e9",
+								"exec": [
+									"var data = pm.iterationData.toObject();\r",
+									"if (!['Login','LoginAfterReset'].includes(data.request_name)) return;\r",
+									"var response = {}; try { response = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"pm.test('Status Code Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.code).to.eql(Number(data.Response_Status_Code));\r",
+									"});\r",
+									"\r",
+									"pm.test('Status Line Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);\r",
+									"});\r",
+									"\r",
+									"if (data.ScenarioType === 'Positive') {\r",
+									"    pm.test('Token Must Exist', function () {\r",
+									"        pm.expect(response).to.have.property('token');\r",
+									"    });\r",
+									"    pm.environment.set('token', response.token);\r",
+									"    pm.environment.set('tokenType', response.type);\r",
+									"\r",
+									"    // Schema validation\r",
+									"    var schema = {\r",
+									"        type: 'object',\r",
+									"        required: ['token','type','userId','email','roles','status','passwordExpired'],\r",
+									"        properties: {\r",
+									"            token: { type: 'string' },\r",
+									"            type: { type: 'string' },\r",
+									"            userId: { type: 'string' },\r",
+									"            email: { type: 'string' },\r",
+									"            roles: { type: 'array', items: { type: 'string' } },\r",
+									"            status: { type: 'string' },\r",
+									"            passwordExpired: { type: 'boolean' }\r",
+									"        }\r",
+									"    };\r",
+									"    pm.test('Schema Validation | ' + data.testCaseId, function () {\r",
+									"        pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"    });\r",
+									"} else {\r",
+									"    pm.test('Error message exists', function () {\r",
+									"        pm.expect(response).to.have.property('message');\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d4380880-b892-4a69-8b83-a50ffaf6e58e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "c2eff281-bd81-42ae-b946-94df3ed7bdde",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLoginEmailId}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{Endpoint}}"
+					},
+					"response": []
+				}
+			],
+			"id": "33225669-835c-4ef4-a62e-440e691432d4"
+		},
+		{
 			"name": "User Controller",
 			"item": [
 				{
@@ -3241,65 +3346,6 @@
 			"id": "7e4fbe9b-4724-4db7-a19d-3b9044e60034"
 		},
 		{
-			"name": "User Login Controller",
-			"item": [
-				{
-					"name": "Post - login",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "8487fcbe-d19e-4628-9cfa-e88ce3fd2a49",
-								"exec": [
-									"pm.test(\"Get token\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.collectionVariables.set (\"token\",jsonData.token)",
-									"});",
-									"   "
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"id": "1c9a28a4-9a44-477b-a5e8-a4a3705809e3",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWFtM0BnbWFpbC5jb20iLCJpYXQiOjE3NjQzMDgzNzcsImV4cCI6MTc2NDMzNzE3N30.NWkDK-RAwnUN3C_bA8ZM0ZHZPxoEFrqCxkKUrJxXAJYmJtw06Nk0E685KPLjqHrzkP_q0GziyML52W-OGhN_2A"
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"userLoginEmailId\": \"Team3@gmail.com\",\n  \"password\": \"ApiRequestA@23\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{BaseUrl}}/login",
-						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
-					},
-					"response": []
-				}
-			],
-			"id": "571e7c07-1d0a-404f-93de-b90b39d6ffe8",
-			"auth": {
-				"type": "bearer",
-				"bearer": {
-					"token": "{{token}}"
-				}
-			}
-		},
-		{
 			"name": "Program Batch Controller",
 			"item": [
 				{
@@ -4906,6 +4952,373 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "User Login Controller",
+			"item": [
+				{
+					"name": "Reset Password API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8487fcbe-d19e-4628-9cfa-e88ce3fd2a49",
+								"exec": [
+									"var data = pm.iterationData.toObject();",
+									"if (data.request_name !== 'ResetPassword') return;",
+									"var response = {}; try { response = pm.response.json(); } catch(e) {}",
+									"",
+									"pm.test('Status Code Validation | ' + data.testCaseId, function () {",
+									"    pm.expect(pm.response.code).to.eql(Number(data.Response_Status_Code));",
+									"});",
+									"",
+									"pm.test('Status Line Validation | ' + data.testCaseId, function () {",
+									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);",
+									"});",
+									"",
+									"if (data.ScenarioType === 'Positive') {",
+									"    pm.test('Response Message Exists', function () {",
+									"        pm.expect(response).to.have.property('message');",
+									"    });",
+									"",
+									"    var schema = {",
+									"        type: 'object',",
+									"        required: ['message','success'],",
+									"        properties: {",
+									"            message: { type: 'string' },",
+									"            success: { type: 'boolean' }",
+									"        }",
+									"    };",
+									"    pm.test('Schema Validation | ' + data.testCaseId, function () {",
+									"        pm.expect(tv4.validate(response, schema)).to.be.true;",
+									"    });",
+									"} else {",
+									"    pm.test('Error message exists', function () {",
+									"        pm.expect(response).to.have.property('message');",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "18ac4c9d-2d79-4d5c-823b-a2a3b0412179",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "d56966e1-c1c7-423b-ac9f-f8f22dbab58b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenType}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userLoginEmailId\": \"{{userLoginEmailId}}\",\n  \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{Endpoint}}",
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "LoginAfterReset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8d07b718-c849-403e-b928-7559502b33e9",
+								"exec": [
+									"var data = pm.iterationData.toObject();\r",
+									"if (!['LoginAfterReset'].includes(data.request_name)) return;\r",
+									"var response = {}; try { response = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"pm.test('Status Code Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.code).to.eql(Number(data.Response_Status_Code));\r",
+									"});\r",
+									"\r",
+									"pm.test('Status Line Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);\r",
+									"});\r",
+									"\r",
+									"if (data.ScenarioType === 'Positive') {\r",
+									"    pm.test('Token Must Exist', function () {\r",
+									"        pm.expect(response).to.have.property('token');\r",
+									"    });\r",
+									"    pm.environment.set('token', response.token);\r",
+									"    pm.environment.set('tokenType', response.type);\r",
+									"\r",
+									"    // Schema validation\r",
+									"    var schema = {\r",
+									"        type: 'object',\r",
+									"        required: ['token','type','userId','email','roles','status','passwordExpired'],\r",
+									"        properties: {\r",
+									"            token: { type: 'string' },\r",
+									"            type: { type: 'string' },\r",
+									"            userId: { type: 'string' },\r",
+									"            email: { type: 'string' },\r",
+									"            roles: { type: 'array', items: { type: 'string' } },\r",
+									"            status: { type: 'string' },\r",
+									"            passwordExpired: { type: 'boolean' }\r",
+									"        }\r",
+									"    };\r",
+									"    pm.test('Schema Validation | ' + data.testCaseId, function () {\r",
+									"        pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"    });\r",
+									"} else {\r",
+									"    pm.test('Error message exists', function () {\r",
+									"        pm.expect(response).to.have.property('message');\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d4380880-b892-4a69-8b83-a50ffaf6e58e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "53c88d2e-1531-40b8-9772-108fbad0dc32",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLoginEmailId}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{Endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "ForgotPassword Confirm Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "41333d5e-0ea7-48c9-9f7f-75ce23ea3566",
+								"exec": [
+									"var data = pm.iterationData.toObject();\r",
+									"if (data.request_name !== 'ForgotPasswordConfirmEmail') return;\r",
+									"var response = {}; try { response = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"pm.test('Status Code Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.code).to.eql(Number(data.Response_Status_Code));\r",
+									"});\r",
+									"\r",
+									"pm.test('Status Line Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);\r",
+									"});\r",
+									"\r",
+									"if (data.ScenarioType === 'Positive') {\r",
+									"    var schema = {\r",
+									"        type: 'object',\r",
+									"        required: ['token','type','userId','email','roles','status','passwordExpired'],\r",
+									"        properties: {\r",
+									"            token: { type: 'string' },\r",
+									"            type: { type: 'string' },\r",
+									"            userId: { type: 'string' },\r",
+									"            email: { type: 'string' },\r",
+									"            roles: { type: 'array', items: { type: 'string' } },\r",
+									"            status: { type: 'string' },\r",
+									"            passwordExpired: { type: 'boolean' }\r",
+									"        }\r",
+									"    };\r",
+									"    pm.test('Schema Validation | ' + data.testCaseId, function () {\r",
+									"        pm.expect(tv4.validate(response, schema)).to.be.true;\r",
+									"    });\r",
+									"} else {\r",
+									"    pm.test('Error message exists', function () {\r",
+									"        pm.expect(response).to.have.property('message');\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "13402285-7dea-4b1f-9a47-deeeb0cb3b46",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{tokenType}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userLoginEmailId\": \"{{userLoginEmailId}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/{{Endpoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f225a112-2602-4079-b726-c100aa244b2d",
+								"exec": [
+									"var data = pm.iterationData.toObject();\r",
+									"if (data.request_name !== 'Logout') return;\r",
+									"\r",
+									"// Status Code Validation\r",
+									"pm.test('Status Code Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.code).to.eql(Number(data.Response_Status_Code));\r",
+									"});\r",
+									"\r",
+									"// Status Line Validation\r",
+									"pm.test('Status Line Validation | ' + data.testCaseId, function () {\r",
+									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);\r",
+									"});\r",
+									"\r",
+									"// Positive Scenario (Successful logout)\r",
+									"if (data.ScenarioType === 'Positive') {\r",
+									"\r",
+									"    pm.test('Logout response should be a non-empty string | ' + data.testCaseId, function () {\r",
+									"        const res = pm.response.text();\r",
+									"        pm.expect(res).to.be.a('string');\r",
+									"        pm.expect(res.length).to.be.greaterThan(0);\r",
+									"        pm.expect(res).to.eql(\"Logout successful\");  // Optional: exact match\r",
+									"    });\r",
+									"\r",
+									"}\r",
+									"// Negative Scenario (missing/invalid token)\r",
+									"else {\r",
+									"\r",
+									"    var response = {};\r",
+									"    try { response = pm.response.json(); } catch(e) {}\r",
+									"\r",
+									"    pm.test('Error message exists | ' + data.testCaseId, function () {\r",
+									"        pm.expect(response).to.have.property('message');\r",
+									"    });\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "52d97870-51bf-41c1-8a06-b974ba9ce9b2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenType}} {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": "{{BaseUrl}}/{{Endpoint}}"
+					},
+					"response": []
+				}
+			],
+			"id": "571e7c07-1d0a-404f-93de-b90b39d6ffe8",
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "{{token}}"
+				}
+			}
 		}
 	],
 	"auth": {
