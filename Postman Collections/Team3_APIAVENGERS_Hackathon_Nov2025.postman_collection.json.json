@@ -249,6 +249,47 @@
 						"url": "{{BaseUrl}}/users/activeUsers"
 					},
 					"response": []
+				},
+				{
+					"name": "Get Emails For Active Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "95abb5f4-b729-468a-b8f6-7f721855e90e",
+								"exec": [
+									"pm.test(\"Validate Response Schema - \" +  pm.iterationData.get(\"scenarioType\") + \" - \" + pm.iterationData.get(\"scenarioName\"), function () {\r",
+									"    const schema = {  \r",
+									"        type: \"array\",\r",
+									"\t\titems: {    \r",
+									"\t\t\ttype: \"string\"\r",
+									"\t\t}\r",
+									"    };\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "a8b16a3e-c534-4592-bed4-eeb40196af70",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/fetch-emails"
+					},
+					"response": []
 				}
 			],
 			"id": "e7817035-eed8-4619-8995-196ae4ddd671",
