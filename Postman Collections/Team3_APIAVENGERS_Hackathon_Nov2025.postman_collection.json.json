@@ -1680,7 +1680,7 @@
 								"exec": [
 									"pm.test(\"Get token\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.collectionVariables.set (\"Bearer_token\",jsonData.token)",
+									"    pm.collectionVariables.set (\"token\",jsonData.token)",
 									"});",
 									"   "
 								],
@@ -3853,6 +3853,10 @@
 		},
 		{
 			"key": "Bearer_token",
+			"value": ""
+		},
+		{
+			"key": "token",
 			"value": ""
 		}
 	]
