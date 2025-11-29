@@ -187,6 +187,68 @@
 						"url": "{{BaseUrl}}/users"
 					},
 					"response": []
+				},
+				{
+					"name": "Get All Active Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a4be50e-53c1-4ac0-941c-713ec84d5273",
+								"exec": [
+									"pm.test(\"Validate Response Schema- \" +  pm.iterationData.get(\"scenarioType\") + \" - \" + pm.iterationData.get(\"scenarioName\"), function () {\r",
+									"    const schema = {\r",
+									"\ttype: \"array\",\r",
+									"        items: {\r",
+									"\t      type: \"object\",\r",
+									"            properties: {\r",
+									"                \"userId\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userFirstName\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userLastName\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userMiddleName\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userPhoneNumber\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userLocation\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userTimeZone\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userLinkedinUrl\": { \"type\": [\"string\",\"null\"]},\r",
+									"\t\t\t\t\"userEduUg\": { \"type\": [\"string\",\"null\"]},\r",
+									"\t\t\t\t\"userEduPg\": { \"type\": [\"string\",\"null\"]},\r",
+									"\t\t\t\t\"userVisaStatus\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userComments\": { \"type\": \"string\"},\r",
+									"\t\t\t\t\"userVisaStatus\": {\"type\": \"string\"},\r",
+									"\t\t\t\t\"userLoginEmail\": { \"type\": \"string\"}\r",
+									"            },\r",
+									"            required: [\"userId\", \"userFirstName\", \"userLastName\", \r",
+									"\t\t\t    \"userPhoneNumber\",\"userLocation\",\r",
+									"\t\t\t\t\"userTimeZone\",\"userLinkedinUrl\",\"userVisaStatus\",\r",
+									"\t\t\t\t\"userLoginEmail\"]\r",
+									"        }\r",
+									"    };\r",
+									"\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "00bdcbb8-2cc5-44d3-917b-160469a27284",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/users/activeUsers"
+					},
+					"response": []
 				}
 			],
 			"id": "e7817035-eed8-4619-8995-196ae4ddd671",
