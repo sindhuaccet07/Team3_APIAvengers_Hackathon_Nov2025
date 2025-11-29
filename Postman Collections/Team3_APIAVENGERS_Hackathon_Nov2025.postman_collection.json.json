@@ -29,7 +29,7 @@
 									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);\r",
 									"});\r",
 									"\r",
-									"if (data.ScenarioType === 'Positive') {\r",
+									"if (data.scenarioType === 'Positive') {\r",
 									"    pm.test('Token Must Exist', function () {\r",
 									"        pm.expect(response).to.have.property('token');\r",
 									"    });\r",
@@ -104,7 +104,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/{{Endpoint}}"
+						"url": "{{BaseUrl}}/{{endPoint}}"
 					},
 					"response": []
 				}
@@ -4976,7 +4976,7 @@
 									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);",
 									"});",
 									"",
-									"if (data.ScenarioType === 'Positive') {",
+									"if (data.scenarioType === 'Positive') {",
 									"    pm.test('Response Message Exists', function () {",
 									"        pm.expect(response).to.have.property('message');",
 									"    });",
@@ -5047,7 +5047,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/{{Endpoint}}",
+						"url": "{{BaseUrl}}/{{endPoint}}",
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
 					},
 					"response": []
@@ -5072,7 +5072,7 @@
 									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);\r",
 									"});\r",
 									"\r",
-									"if (data.ScenarioType === 'Positive') {\r",
+									"if (data.scenarioType === 'Positive') {\r",
 									"    pm.test('Token Must Exist', function () {\r",
 									"        pm.expect(response).to.have.property('token');\r",
 									"    });\r",
@@ -5147,7 +5147,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/{{Endpoint}}"
+						"url": "{{BaseUrl}}/{{endPoint}}"
 					},
 					"response": []
 				},
@@ -5171,7 +5171,7 @@
 									"    pm.expect(pm.response.status).to.eql(data.expectedstatusline);\r",
 									"});\r",
 									"\r",
-									"if (data.ScenarioType === 'Positive') {\r",
+									"if (data.scenarioType === 'Positive') {\r",
 									"    var schema = {\r",
 									"        type: 'object',\r",
 									"        required: ['token','type','userId','email','roles','status','passwordExpired'],\r",
@@ -5231,7 +5231,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/{{Endpoint}}"
+						"url": "{{BaseUrl}}/{{endPoint}}"
 					},
 					"response": []
 				},
@@ -5257,7 +5257,7 @@
 									"});\r",
 									"\r",
 									"// Positive Scenario (Successful logout)\r",
-									"if (data.ScenarioType === 'Positive') {\r",
+									"if (data.scenarioType === 'Positive') {\r",
 									"\r",
 									"    pm.test('Logout response should be a non-empty string | ' + data.testCaseId, function () {\r",
 									"        const res = pm.response.text();\r",
@@ -5307,7 +5307,7 @@
 								"value": "application/json"
 							}
 						],
-						"url": "{{BaseUrl}}/{{Endpoint}}"
+						"url": "{{BaseUrl}}/{{endPoint}}"
 					},
 					"response": []
 				}
