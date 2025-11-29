@@ -290,6 +290,56 @@
 						"url": "{{BaseUrl}}/fetch-emails"
 					},
 					"response": []
+				},
+				{
+					"name": "Get All Roles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "92d61e9c-0d83-4e90-bc09-2c751f7f7f30",
+								"exec": [
+									"pm.test(\"Validate Response Schema- \" +  pm.iterationData.get(\"scenarioType\") + \" - \" + pm.iterationData.get(\"scenarioName\"), function () {\r",
+									"    const schema = {\r",
+									"        type: \"array\",\r",
+									"        items: {\r",
+									"            type: \"object\",\r",
+									"            properties: {\r",
+									"                roleId: { type: \"string\" },\r",
+									"                roleName: { type: \"string\" },\r",
+									"                roleDesc: { type: \"string\" },\r",
+									"                creationTime: { type: \"string\" },\r",
+									"                lastModTime: { type: \"string\" }\r",
+									"            },\r",
+									"            required: [\"roleId\", \"roleName\", \"roleDesc\", \"creationTime\", \"lastModTime\"]\r",
+									"        }\r",
+									"    };\r",
+									"\r",
+									"    pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "ceea9fdc-f590-4585-8a66-c79c67894160",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/roles"
+					},
+					"response": []
 				}
 			],
 			"id": "e7817035-eed8-4619-8995-196ae4ddd671",
