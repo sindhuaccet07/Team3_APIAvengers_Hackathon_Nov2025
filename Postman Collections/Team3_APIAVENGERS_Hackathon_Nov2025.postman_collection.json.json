@@ -1724,15 +1724,22 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "13e748be-80e8-4bb8-a9bc-8608fc4360f6",
+						"id": "820845e7-f676-4730-8c12-3889d7ba9916",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
 						"exec": [
-							"const requestToRun = pm.iterationData.get(\"requestName\");\r",
-							"const currentRequest = pm.info.requestName;\r",
-							"if(requestToRun && (currentRequest !== requestToRun)) {\r",
-							"    pm.execution.skipRequest();\r",
+							"try {\r",
+							"    const requestToRun = pm.iterationData.get(\"requestName\");\r",
+							"    const currentRequest = pm.info.requestName;\r",
+							"    if(!requestToRun){\r",
+							"        throw new Error(\"Missing input json file\");\r",
+							"    }\r",
+							"    if(currentRequest !== requestToRun) {\r",
+							"        pm.execution.skipRequest();\r",
+							"    }\r",
+							"} catch(e){\r",
+							"    throw new Error(\"Pre-request script failed: \" + e.message);\r",
 							"}"
 						]
 					}
@@ -1740,7 +1747,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "c490d935-b69d-4b57-94d2-94f4267547fd",
+						"id": "ae0d4199-959a-466a-bec8-12b874db9e17",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
