@@ -748,13 +748,13 @@
 									"}\r",
 									"\r",
 									"if (!_userProgramId) {\r",
-									"    pm.environment.set(\"tempProgramId\", pm.environment.get(\"programId\"));\r",
+									"    pm.environment.set(\"tempProgramId\", pm.environment.get(\"userProgramId\"));\r",
 									"} else {\r",
 									"    pm.environment.set(\"tempProgramId\", _userProgramId);\r",
 									"}\r",
 									"\r",
 									"if (!_userBatchId) {\r",
-									"    pm.environment.set(\"tempBatchId\", pm.environment.get(\"batchId\"));\r",
+									"    pm.environment.set(\"tempBatchId\", pm.environment.get(\"userBatchId\"));\r",
 									"} else {\r",
 									"    pm.environment.set(\"tempBatchId\", _userBatchId);\r",
 									"}"
@@ -821,7 +821,6 @@
 							],
 							"variable": [
 								{
-									"id": "916721a3-e6b3-48cb-a743-31fb9a81a09c",
 									"key": "userId",
 									"value": "{{tempUserId}}"
 								}
