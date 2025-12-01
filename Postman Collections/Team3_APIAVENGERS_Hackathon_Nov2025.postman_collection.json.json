@@ -198,6 +198,21 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "da64779a-17fb-495e-96cd-ec9947d8bece",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Create User') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "2ab67175-d343-4581-88d8-80d7c4542889",
@@ -274,6 +289,21 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b67dfa87-dce7-450d-a4ec-ec6abd5f58c6",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Users') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "971fd6cc-54df-4782-8dc1-c7edc860dd58",
@@ -336,6 +366,21 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7cf08a73-00d5-4456-be0a-fe3fdaf126b2",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Active Users') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "00bdcbb8-2cc5-44d3-917b-160469a27284",
@@ -372,6 +417,21 @@
 									"    };\r",
 									"    pm.response.to.have.jsonSchema(schema);\r",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1cbb8e91-5720-4e08-b18a-137eef574937",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get Emails For Active Users') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -427,6 +487,21 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4524ec86-36f1-481d-80ce-559d186531ba",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Roles') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "ceea9fdc-f590-4585-8a66-c79c67894160",
@@ -454,6 +529,10 @@
 							"script": {
 								"id": "6901d741-e066-48d0-a9ff-946bfeb136d8",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"    if (testData.requestName !== 'Get User by Id') {\r",
+									"        pm.execution.skipRequest();\r",
+									"    }\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
 									"if (!_userId) {\r",
 									"    pm.environment.set(\"tempUserId\", pm.environment.get(\"userId\"));\r",
@@ -590,7 +669,6 @@
 							],
 							"variable": [
 								{
-									"id": "131e102d-ed70-4e78-a2ac-cfa338c47a11",
 									"key": "Id",
 									"value": "{{tempUserId}}"
 								}
@@ -644,6 +722,21 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "15cbbaad-08f8-4f14-b899-4bc69737a062",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Users with Roles') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "7541052d-18b7-4965-a018-577f3d41295c",
@@ -685,6 +778,21 @@
 									"    };\r",
 									"    pm.response.to.have.jsonSchema(schema);\r",
 									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0c32446a-aaf9-49ef-a14c-0d63922a69ea",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Users Count') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -732,6 +840,10 @@
 							"script": {
 								"id": "f3f6af82-0cf0-4546-99cb-14f94f39eec7",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Update User Program Batch') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userProgramId = pm.iterationData.get(\"userProgramId\");\r",
 									"let _userBatchId = pm.iterationData.get(\"userBatchId\");\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
@@ -837,6 +949,10 @@
 							"script": {
 								"id": "e4c175af-a655-4053-9b71-6b5930231c61",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Users by Program') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userProgramId = pm.iterationData.get(\"userProgramId\");\r",
 									"if (!_userProgramId) {\r",
 									"    pm.environment.set(\"tempProgramId\", pm.environment.get(\"programId\"));\r",
@@ -915,7 +1031,6 @@
 							],
 							"variable": [
 								{
-									"id": "968a2378-0cdf-4e3a-8574-033180a0fa99",
 									"key": "programId",
 									"value": "{{tempProgramId}}"
 								}
@@ -932,6 +1047,10 @@
 							"script": {
 								"id": "a9b900aa-94c3-44a5-8bd4-93b7cd1d20f2",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Users by Batch') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userBatchId = pm.iterationData.get(\"userBatchId\");\r",
 									"if (!_userBatchId) {\r",
 									"    pm.environment.set(\"tempBatchId\", pm.environment.get(\"batchId\"));\r",
@@ -1010,7 +1129,6 @@
 							],
 							"variable": [
 								{
-									"id": "8d0da719-c83e-4392-9de5-207340540e3f",
 									"key": "batchId",
 									"value": "{{tempBatchId}}"
 								}
@@ -1061,6 +1179,21 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3a680dc0-f425-478d-aabc-161a217667ed",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Users by Role Id') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "c96e72cf-7531-4833-bfc8-cc8a1bf42380",
@@ -1088,7 +1221,6 @@
 							],
 							"variable": [
 								{
-									"id": "ab3e0801-fb8e-49bb-8612-9a2cc9d11e32",
 									"key": "roleId",
 									"value": "{{userRoleId}}"
 								}
@@ -1139,6 +1271,21 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "90f448c3-d219-499e-a649-db90d353615d",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get All Users with Facets') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "cd64dbd3-e405-4591-8fdf-b3e7d346baff",
@@ -1166,6 +1313,10 @@
 							"script": {
 								"id": "605952e7-2b23-4d2e-9dbb-cc2ba228b27e",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get User BatchId By UserId') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
 									"if (!_userId) {\r",
 									"    pm.environment.set(\"tempUserId\", pm.environment.get(\"userId\"));\r",
@@ -1234,7 +1385,6 @@
 							],
 							"variable": [
 								{
-									"id": "8dad7cae-385b-4aca-8043-2c8fde361dc0",
 									"key": "userId",
 									"value": "{{tempUserId}}"
 								}
@@ -1251,6 +1401,10 @@
 							"script": {
 								"id": "81d4d976-346c-4485-9ddc-2e56dcd8df39",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Get User Batch Details By UserId') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
 									"if (!_userId) {\r",
 									"    pm.environment.set(\"tempUserId\", pm.environment.get(\"userId\"));\r",
@@ -1318,7 +1472,6 @@
 							],
 							"variable": [
 								{
-									"id": "9cd7aa8e-d4d2-4ebd-bb3f-d8d46c0a0986",
 									"key": "id",
 									"value": "{{tempUserId}}"
 								}
@@ -1335,6 +1488,10 @@
 							"script": {
 								"id": "bd2ade07-3560-490a-b581-e21295afaddc",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Update User') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
 									"if (!_userId) {\r",
 									"    pm.environment.set(\"tempUserId\", pm.environment.get(\"userId\"));\r",
@@ -1431,7 +1588,6 @@
 							],
 							"variable": [
 								{
-									"id": "a16cdb12-d0e9-4dd1-9c98-acd2bfc9486b",
 									"key": "id",
 									"value": "{{userId}}"
 								}
@@ -1448,6 +1604,10 @@
 							"script": {
 								"id": "04ce9275-1f46-42e5-8368-890b04deb8df",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Update User Role') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
 									"let _userRoleId = pm.iterationData.get(\"userRoleId\");\r",
 									"if (!_userId) {\r",
@@ -1529,7 +1689,6 @@
 							],
 							"variable": [
 								{
-									"id": "5e9408e4-5738-4038-acd2-3d0312f61cd3",
 									"key": "userId",
 									"value": "{{userId}}"
 								}
@@ -1546,6 +1705,10 @@
 							"script": {
 								"id": "b92ccba2-d258-4fe8-aee1-89837a5c5287",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Delete User') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
 									"if (!_userId) {\r",
 									"    pm.environment.set(\"tempUserId\", pm.environment.get(\"userId\"));\r",
@@ -1610,7 +1773,6 @@
 							],
 							"variable": [
 								{
-									"id": "026f55be-badd-4df7-bbef-1a9fb5d689ff",
 									"key": "id",
 									"value": "{{tempUserId}}"
 								}
@@ -1627,6 +1789,10 @@
 							"script": {
 								"id": "01c45ceb-b0ac-484d-b702-41812407b558",
 								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"if (testData.requestName !== 'Update User Login Status') {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
 									"let _userId = pm.iterationData.get(\"userId\");\r",
 									"let _userLoginEmail = pm.iterationData.get(\"userLoginEmail\");\r",
 									"if (!_userId) {\r",
@@ -1708,7 +1874,6 @@
 							],
 							"variable": [
 								{
-									"id": "0b85cd1d-ed08-4019-ae40-782bf0522563",
 									"key": "id",
 									"value": "{{tempUserId}}"
 								}
@@ -1723,12 +1888,12 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "72c3b080-4d8c-444d-a73b-7a09b8f8cc64",
+						"id": "938dcd02-9737-47d4-b6c1-399e062c230c",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
 						"exec": [
-							"try {\r",
+							"/*try {\r",
 							"    const requestToRun = pm.iterationData.get(\"requestName\");\r",
 							"    const currentRequest = pm.info.requestName;\r",
 							"    if(!requestToRun){\r",
@@ -1739,14 +1904,14 @@
 							"    }\r",
 							"} catch(e){\r",
 							"    throw new Error(\"Pre-request script failed: \" + e.message);\r",
-							"}"
+							"}*/"
 						]
 					}
 				},
 				{
 					"listen": "test",
 					"script": {
-						"id": "ae396875-b6f1-4340-a2ae-b933a46dc583",
+						"id": "a1dd69c3-0027-4d2b-93db-100146c02bbb",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
