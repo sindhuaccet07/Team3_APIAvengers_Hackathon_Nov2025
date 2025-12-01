@@ -3579,7 +3579,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/lbatches"
+						"url": "{{BaseUrl}}/{{endPoint}}"
 					},
 					"response": []
 				},
@@ -3607,9 +3607,6 @@
 							"script": {
 								"id": "4a3f53d0-2ed4-4932-b792-ad427d6bc599",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
 									""
 								],
 								"type": "text/javascript",
@@ -3640,7 +3637,71 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}batches"
+						"url": "{{BaseUrl}}/{{endPoint}}"
+					},
+					"response": []
+				},
+				{
+					"name": "get batch details by batch id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9cacc013-5370-4bd1-b47c-09be2f9a0792",
+								"exec": [
+									"let testData = pm.iterationData.toObject();",
+									"",
+									"if (testData.requestOperation !== 'getBatchById') {",
+									"    pm.execution.skipRequest();",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e909b8e2-adef-4325-8ae6-3dc90c1d6ddd",
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Batch ID matches\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.batchId).to.eql(parseInt(pm.environment.get(\"batchId\")));",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"id": "793756c1-dee9-4b21-b4ca-1ccf1ef451ce",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/batches/{{batchId}}"
 					},
 					"response": []
 				},
@@ -3654,7 +3715,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'getAllBatches') {",
+									"if (testData.requestOperation !== 'getBatchByProgramId') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -3721,7 +3782,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'getAllBatches') {",
+									"if (testData.requestOperation !== 'getBatchByName') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -3769,72 +3830,6 @@
 					"response": []
 				},
 				{
-					"name": "get batch details by batch id",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "9cacc013-5370-4bd1-b47c-09be2f9a0792",
-								"exec": [
-									"let testData = pm.iterationData.toObject();",
-									"",
-									"if (testData.requestOperation !== 'getAllBatches') {",
-									"    pm.execution.skipRequest();",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "e909b8e2-adef-4325-8ae6-3dc90c1d6ddd",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Batch ID matches\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.batchId).to.eql(parseInt(pm.environment.get(\"batchId\")));",
-									"});",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"id": "793756c1-dee9-4b21-b4ca-1ccf1ef451ce",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{BaseUrl}}/batches/{{batchId}}\n"
-					},
-					"response": []
-				},
-				{
 					"name": "delete by batch id",
 					"event": [
 						{
@@ -3844,7 +3839,7 @@
 								"exec": [
 									"let testData = pm.iterationData.toObject();",
 									"",
-									"if (testData.requestOperation !== 'getAllBatches') {",
+									"if (testData.requestOperation !== 'deleteBatch') {",
 									"    pm.execution.skipRequest();",
 									"}"
 								],
@@ -3858,9 +3853,7 @@
 							"script": {
 								"id": "9dc5d32d-d920-42cb-a6eb-1012551d9da0",
 								"exec": [
-									"pm.test(\"Status code is 200 or 204\", function () {",
-									"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
-									"});",
+									"",
 									"",
 									"pm.test(\"Batch deleted successfully\", function () {",
 									"    console.log(\"Deleted Batch ID:\", pm.environment.get(\"batchId\"));",
@@ -3896,7 +3889,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/batches/{{batchId}}\n"
+						"url": "{{BaseUrl}}/batches/{{batchId}}"
 					},
 					"response": []
 				},
@@ -3942,7 +3935,7 @@
 								}
 							}
 						},
-						"url": "{{BaseUrl}}/batches/{{batchId}}\n"
+						"url": "{{BaseUrl}}/batches/{{batchId}}"
 					},
 					"response": []
 				}
@@ -3952,7 +3945,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "379f261d-5b2d-4842-8439-ab696c1f20da",
+						"id": "7cc00ee4-5cf7-4b06-8c6d-822c8a50d619",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
@@ -3964,16 +3957,28 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "e53c3bb6-a4de-4fab-a44d-a516ac381cbf",
+						"id": "72b827d0-41e6-45e0-b8ee-36f927135996",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
 						"exec": [
-							"let testData = pm.iterationData.toObject();",
-							"pm.test('Validate scenario -- ' + testData.ScenarioName, function () {",
-							"    console.log(\"Scenario name -- \" + testData.ScenarioName);",
+							"var testcaseId = pm.iterationData.get (\"testCaseId\");",
+							"var scenarioName = pm.iterationData.get(\"scenarioName\");",
+							"var scenarioType = pm.iterationData.get(\"scenarioType\");",
+							"",
+							"pm.test(`TESTCASE: ${testcaseId} | TYPE: ${scenarioType} | SCENARIO: ${scenarioName}`, function () {",
+							"    pm.expect(testcaseId, \"Missing testcaseId\").to.not.be.undefined;",
+							"    pm.expect(scenarioType, \"Missing scenarioType\").to.not.be.undefined;",
+							"    pm.expect(scenarioName, \"Missing scenarioName\").to.not.be.undefined;",
 							"});",
+							"",
+							"let testData = pm.iterationData.toObject();",
+							"pm.test('Validate scenario -- ' + testData.scenarioName, function () {",
+							"    console.log(\"Scenario name -- \" + testData.scenarioName);",
+							"});",
+							"",
 							"console.log(\"Expected status code: \" + testData.expectedStatusCode);",
+							"",
 							"pm.test(\"Validate actual and expected Status code\", function() {",
 							"    pm.expect(pm.response.code).to.eql(testData.expectedStatusCode);",
 							"});"
