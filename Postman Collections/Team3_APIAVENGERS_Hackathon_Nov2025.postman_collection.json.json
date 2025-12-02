@@ -4432,6 +4432,7 @@
 									"}\r",
 									"\r",
 									"if(testData.expectedStatusCode === 404) {\r",
+									"    let jsonData = pm.response.json();\r",
 									"    if(testData.scenarioName == 'Update skill with invalid endpoint') {\r",
 									"        pm.response.to.have.body(\"Invalid endpoint\");\r",
 									"    }\r",
