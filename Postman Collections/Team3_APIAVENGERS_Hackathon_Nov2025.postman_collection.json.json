@@ -4432,8 +4432,15 @@
 									"}\r",
 									"\r",
 									"if(testData.expectedStatusCode === 404) {\r",
-									"    pm.response.to.have.body(\"Invalid endpoint\");\r",
-									"}"
+									"    if(testData.scenarioName == 'Update skill with invalid endpoint') {\r",
+									"        pm.response.to.have.body(\"Invalid endpoint\");\r",
+									"    }\r",
+									"    else if(testData.scenarioName == 'Update skill with invalid skillId') {\r",
+									"        pm.expect(jsonData.message).to.be.a(\"string\");\r",
+									"        pm.expect(jsonData.message).to.contain(\"not found\");\r",
+									"    }\r",
+									"}\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -5427,15 +5434,33 @@
 	],
 	"variable": [
 		{
-			"key": "base_url",
+			"id": "184a69f4-2ae1-424c-8ab9-2f102b13b723",
+			"key": "a680ced4-e07e-4920-bdd9-4282baa469ac",
 			"value": ""
 		},
 		{
-			"key": "Bearer_token",
+			"id": "ad2f7697-817a-45fc-817e-9b51d03c06d6",
+			"key": "userFirstName",
 			"value": ""
 		},
 		{
-			"key": "token",
+			"id": "b8042eff-be9b-4a56-98df-5372de245110",
+			"key": "userLastName",
+			"value": ""
+		},
+		{
+			"id": "9f53c0a7-85c3-4449-86ee-3eae59074ba8",
+			"key": "userPhoneNumber",
+			"value": ""
+		},
+		{
+			"id": "1cca8d1d-a925-41e8-87ce-7f79ca52becc",
+			"key": "userTimeZone",
+			"value": ""
+		},
+		{
+			"id": "008e13e4-df29-44d1-bba5-dca3fc16a7b7",
+			"key": "userVisaStatus",
 			"value": ""
 		}
 	]
