@@ -3805,7 +3805,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "7cc00ee4-5cf7-4b06-8c6d-822c8a50d619",
+						"id": "ebe879f9-4530-46b5-a7af-a8d76e4ad67c",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
@@ -3817,7 +3817,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "72b827d0-41e6-45e0-b8ee-36f927135996",
+						"id": "941eaae9-6ee7-47ce-bf7f-e092dd1ac549",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
@@ -3833,9 +3833,6 @@
 							"});",
 							"",
 							"let testData = pm.iterationData.toObject();",
-							"pm.test('Validate scenario -- ' + testData.scenarioName, function () {",
-							"    console.log(\"Scenario name -- \" + testData.scenarioName);",
-							"});",
 							"",
 							"console.log(\"Expected status code: \" + testData.expectedStatusCode);",
 							"",
@@ -4947,7 +4944,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "e6d79d6b-4613-44e4-96fc-34661629206f",
+						"id": "e191541b-5e7a-4b37-bccc-4c79143ae8a2",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
@@ -4959,15 +4956,12 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ac9e1631-bb54-4329-91c1-f37bdaf2f9b4",
+						"id": "0484d638-40ea-44f2-ae3c-696a049a5161",
 						"type": "text/javascript",
 						"packages": {},
 						"requests": {},
 						"exec": [
 							"let testData = pm.iterationData.toObject();\r",
-							"pm.test('Validate scenario -- ' + testData.scenarioName, function () {\r",
-							"    console.log(\"Scenario name -- \" + testData.scenarioName);\r",
-							"});\r",
 							"\r",
 							"var testcaseId = pm.iterationData.get (\"testCaseId\");\r",
 							"var scenarioName = pm.iterationData.get(\"scenarioName\");\r",
