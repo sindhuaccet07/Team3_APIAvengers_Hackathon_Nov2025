@@ -638,6 +638,16 @@
 									"    };\r",
 									"    \r",
 									"    if(pm.response.code ===200){\r",
+									"        var jsonData = pm.response.json();\r",
+									"        pm.collectionVariables.set(\"userFirstName\",jsonData.user.userFirstName);\r",
+									"        pm.collectionVariables.set(\"userLastName\",jsonData.user.userLastName);\r",
+									"        pm.collectionVariables.set(\"userPhoneNumber\",jsonData.user.userPhoneNumber);\r",
+									"        pm.collectionVariables.set(\"userTimeZone\",jsonData.user.userTimeZone);\r",
+									"        pm.collectionVariables.set(\"userVisaStatus\",jsonData.user.userVisaStatus);\r",
+									"        let _userEmailId = pm.iterationData.get(\"userId\");\r",
+									"        if (_userEmailId) {\r",
+									"            pm.collectionVariables.set(\"userLoginEmail\",jsonData.user.userLoginEmail);\r",
+									"        }\r",
 									"        pm.response.to.have.jsonSchema(positiveSchema);\r",
 									"    } else {\r",
 									"        pm.response.to.have.jsonSchema(negativeSchema);\r",
@@ -1575,7 +1585,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \r\n  \"userFirstName\": \"{{userFirstName}}\",\r\n  \"userLastName\": \"{{userLastName}}\",\r\n  \"userPhoneNumber\": \"{{userPhoneNumber}}\",\r\n  \"userTimeZone\": \"{{userTimeZone}}\",\r\n  \"userVisaStatus\": \"{{userVisaStatus}}\",\r\n  \"userLoginEmail\": \"{{userLoginEmail}}\",\r\n  \"userLocation\": \"NY\"\r\n  }",
+							"raw": "{  \r\n  \"userFirstName\": \"{{userFirstName}}\",\r\n  \"userLastName\": \"{{userLastName}}\",\r\n  \"userPhoneNumber\": \"{{userPhoneNumber}}\",\r\n  \"userTimeZone\": \"{{userTimeZone}}\",\r\n  \"userVisaStatus\": \"{{userVisaStatus}}\",\r\n  \"userLoginEmail\": \"{{userLoginEmail}}\",\r\n  \"userLocation\": \"{{userLocation}}\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1695,7 +1705,7 @@
 							"variable": [
 								{
 									"key": "userId",
-									"value": "{{userId}}"
+									"value": "{{tempUserId}}"
 								}
 							]
 						}
