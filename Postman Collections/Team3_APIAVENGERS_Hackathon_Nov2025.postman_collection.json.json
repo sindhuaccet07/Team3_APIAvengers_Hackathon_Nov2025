@@ -69,7 +69,12 @@
 							"script": {
 								"id": "d4380880-b892-4a69-8b83-a50ffaf6e58e",
 								"exec": [
-									""
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.request_name != \"Login\") {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
+									"console.log(\"Final URL:\", pm.request.url.toString());"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -3357,161 +3362,6 @@
 						"url": "{{BaseUrl}}/{{endPoint}}"
 					},
 					"response": []
-				},
-				{
-					"name": "Missing Mandatory Fields",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "9f726be5-7ba2-4a8a-bac3-57b976f139b2",
-								"exec": [
-									"let data = pm.iterationData.toObject();\r",
-									"if (data.requestOperation != \"Missing\") {\r",
-									"    pm.execution.skipRequest();\r",
-									"}\r",
-									"\r",
-									"pm.request.method= pm.iterationData.get(\"requestType\");\r",
-									" \r",
-									"let endpoint = data.endPoint;\r",
-									"let baseUrl = pm.environment.get(\"BaseUrl\");\r",
-									"pm.request.url = baseUrl + \"/\" + endpoint;\r",
-									"\r",
-									"\r",
-									"/* -------------------------------------------------\r",
-									"   3. REMOVE MISSING MANDATORY FIELDS FROM BODY\r",
-									"---------------------------------------------------*/\r",
-									"let body = {};\r",
-									"try { body = JSON.parse(pm.request.body.raw || \"{}\"); }\r",
-									"catch (e) { body = {}; }\r",
-									"\r",
-									"let missingFields = [];\r",
-									"if (data.missingMandatory) {\r",
-									"    missingFields = data.missingMandatory.split(\",\").map(f => f.trim());\r",
-									"}\r",
-									"\r",
-									"missingFields.forEach(f => {\r",
-									"    if (body.hasOwnProperty(f)) {\r",
-									"        delete body[f];\r",
-									"    }\r",
-									"});\r",
-									"\r",
-									"pm.request.body.raw = JSON.stringify(body, null, 2);\r",
-									"\r",
-									"console.log(\"Removed Fields:\", missingFields.join(\", \"));\r",
-									"console.log(\"Final Request Body:\", body);\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "0376b13f-de5f-45ea-b2f4-b73aaa17d773",
-								"exec": [
-									"let status = pm.response.code;\r",
-									"let data = pm.iterationData.toObject();\r",
-									"let testcaseId = pm.iterationData.get (\"testcaseId\");\r",
-									"let scenarioName = pm.iterationData.get(\"scenarioName\");\r",
-									"let scenarioType = pm.iterationData.get(\"scenarioType\");\r",
-									"\r",
-									"pm.test(`TESTCASE: ${testcaseId} | TYPE: ${scenarioType} | SCENARIO: ${scenarioName}`, function () {\r",
-									"    pm.expect(testcaseId, \"Missing testcaseId\").to.not.be.undefined;\r",
-									"    pm.expect(scenarioType, \"Missing scenarioType\").to.not.be.undefined;\r",
-									"    pm.expect(scenarioName, \"Missing scenarioName\").to.not.be.undefined;\r",
-									"});\r",
-									"\r",
-									"let expectedStatus = parseInt(data.expectedStatus);\r",
-									"\r",
-									"let responseBody = {};\r",
-									"try { responseBody = pm.response.json(); }\r",
-									"catch (e) { responseBody = {}; }\r",
-									"\r",
-									"let responseString = JSON.stringify(responseBody).toLowerCase();\r",
-									"\r",
-									"console.log(\"Response Body:\", responseBody);\r",
-									"console.log(\"Response Code:\", status);\r",
-									"console.log(\"Test Data Row:\", data);\r",
-									"\r",
-									"pm.test(\"STATUS CODE VALIDATION\", () => {\r",
-									"    pm.expect(status).to.eql(expectedStatus);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"let missingFields = [];\r",
-									"if (data.missingMandatory) {\r",
-									"    missingFields = data.missingMandatory\r",
-									"        .split(\",\")\r",
-									"        .map(f => f.trim());\r",
-									"}\r",
-									"\r",
-									"let isNegative = missingFields.length > 0;\r",
-									"\r",
-									"if (!isNegative) {\r",
-									"\r",
-									"    pm.test(\"Validate response contains mandatory fields\", () => {\r",
-									"        pm.expect(responseBody).to.have.property(\"programName\");\r",
-									"        pm.expect(responseBody).to.have.property(\"programDescription\");\r",
-									"        pm.expect(responseBody).to.have.property(\"programStatus\");\r",
-									"    });\r",
-									"\r",
-									"    if (data.expectedRespMessage) {\r",
-									"        pm.test(\"Validate expected message\", () => {\r",
-									"            pm.expect(responseString).to.include(\r",
-									"                data.expectedRespMessage.toLowerCase()\r",
-									"            );\r",
-									"        });\r",
-									"    }\r",
-									"}\r",
-									"\r",
-									"if (isNegative) {\r",
-									"\r",
-									"    if (data.expectedRespMessage) {\r",
-									"        pm.test(\"NEGATIVE: Validate expected message\", () => {\r",
-									"            pm.expect(responseString).to.include(\r",
-									"                data.expectedRespMessage.toLowerCase()\r",
-									"            );\r",
-									"        });\r",
-									"    }\r",
-									"}\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {},
-								"requests": {}
-							}
-						}
-					],
-					"id": "3acb08f6-749e-4dbd-a569-21d2de2589f9",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"programName\": \"default\",\r\n    \"programDescription\": \"default\",\r\n    \"programStatus\": \"Active\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": ""
-					},
-					"response": []
 				}
 			],
 			"id": "7e4fbe9b-4724-4db7-a19d-3b9044e60034"
@@ -5184,7 +5034,12 @@
 							"script": {
 								"id": "18ac4c9d-2d79-4d5c-823b-a2a3b0412179",
 								"exec": [
-									""
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.request_name != \"ResetPassword\") {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
+									"console.log(\"Final URL:\", pm.request.url.toString());"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -5288,7 +5143,12 @@
 							"script": {
 								"id": "d4380880-b892-4a69-8b83-a50ffaf6e58e",
 								"exec": [
-									""
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.request_name != \"LoginAfterReset\") {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
+									"console.log(\"Final URL:\", pm.request.url.toString());"
 								],
 								"type": "text/javascript",
 								"packages": {},
@@ -5374,6 +5234,23 @@
 								"packages": {},
 								"requests": {}
 							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9db620e2-ae9b-4889-a6c8-ba79f14835ee",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.request_name != \"ForgotPasswordConfirmEmail\") {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
+									"console.log(\"Final URL:\", pm.request.url.toString());"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
 					],
 					"id": "13402285-7dea-4b1f-9a47-deeeb0cb3b46",
@@ -5454,6 +5331,23 @@
 									"    });\r",
 									"}\r",
 									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "84025c32-6d7b-45a3-bebb-847f2be5c25d",
+								"exec": [
+									"let testData = pm.iterationData.toObject();\r",
+									"\r",
+									"if (testData.request_name != \"Logout\") {\r",
+									"    pm.execution.skipRequest();\r",
+									"}\r",
+									"console.log(\"Final URL:\", pm.request.url.toString());"
 								],
 								"type": "text/javascript",
 								"packages": {},
